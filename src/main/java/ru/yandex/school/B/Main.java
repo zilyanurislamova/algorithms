@@ -1,6 +1,8 @@
 package ru.yandex.school.B;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Scanner;
 
 public class Main {
@@ -42,14 +44,13 @@ public class Main {
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        int n = scanner.nextInt(); //число открытых вакансий
+        int n = scanner.nextInt(); //число вакансий
         scanner.nextLine();
 
         Vacancy[] vacancies = new Vacancy[n]; //вакансия и максимум претендентов
-        int winnerCount = 0;
         for (int i = 0; i < n; i++) {
             String[] s = scanner.nextLine().split(",");
-            vacancies[i] = new Vacancy(s[0], winnerCount += Integer.parseInt(s[1]));
+            vacancies[i] = new Vacancy(s[0], Integer.parseInt(s[1]));
         }
 
         int k = scanner.nextInt(); //число участников
@@ -63,25 +64,23 @@ public class Main {
 
         Arrays.sort(candidates);
 
-        String[] winners = new String[winnerCount];
-        int winnerIndex = 0;
+        ArrayList<String> winners = new ArrayList<>();
         for (int i = 0; i < n; i++) {
             String vacancy = vacancies[i].name;
             int wanted = vacancies[i].wanted;
             int applicants = 0;
             for (int j = 0; j < k && applicants < wanted; j++) {
                 if (vacancy.equals(candidates[j].vacancy)) {
-                    winners[winnerIndex] = candidates[j].name;
-                    winnerIndex++;
+                    winners.add(candidates[j].name);
                     applicants++;
                 }
             }
         }
 
-        Arrays.sort(winners);
+        Collections.sort(winners);
 
-        for (int i = 0; i < winnerCount; i++) {
-            System.out.println(winners[i]);
+        for (int i = 0; i < winners.size(); i++) {
+            System.out.println(winners.get(i));
         }
     }
 }

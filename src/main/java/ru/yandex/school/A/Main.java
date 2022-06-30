@@ -13,12 +13,16 @@ public class Main {
         String q = scanner.nextLine();
         int length = s.length();
         for (int i = 0; i < length; i++) {
-            if (q.charAt(i) == s.charAt(i)) {
-                System.out.println(correct);
-                continue;
-            }
             if (!s.contains(String.valueOf(q.charAt(i)))) {
                 System.out.println(absent);
+                continue;
+            }
+            if (q.charAt(i) == s.charAt(i)) {
+                s = s.substring(0, i) + s.substring(i + 1);
+                q = q.substring(0, i) + q.substring(i + 1);
+                length--;
+                i--;
+                System.out.println(correct);
                 continue;
             }
             for (int j = 0; j < length; j++) {

@@ -16,6 +16,10 @@ public class Main {
     public static final String DATE_BEFORE = "DATE_BEFORE";
     public static final String DATE_AFTER = "DATE_AFTER";
 
+    public static boolean isBetweenInclusive(LocalDate start, LocalDate end, LocalDate target) {
+        return !target.isBefore(start) && !target.isAfter(end);
+    }
+
     public static class Product implements Comparable<Product> {
         public long id;
         public String name;
@@ -36,44 +40,52 @@ public class Main {
 
         @Override
         public String toString() {
-            return String.format("{\"id\": %d, \"name\": %s, \"price\": %d, \"date\": %s}", this.id, this.name, this.price, this.date);
-        }
-    }
-
-    public static void main(String[] args) throws ParseException {
-        Scanner scanner = new Scanner(System.in);
-        String products = scanner.nextLine();
-        HashMap<String, String> filters = new HashMap<>();
-        for (int i = 0; i < 5; i++) {
-            String[] s = scanner.nextLine().split(" ");
-            filters.put(s[0], s[1]);
+            return String.format("{\"id\": %d, \"name\": \"%s\", \"price\": %d, \"date\": \"%s\"}", this.id, this.name, this.price, this.date);
         }
 
-        JSONParser jsonParser = new JSONParser();
-        JSONArray jsonArray = (JSONArray) jsonParser.parse(products);
-        Iterator iterator = jsonArray.iterator();
-        ArrayList<Product> list = new ArrayList<>();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
-        while (iterator.hasNext()) {
-            JSONObject jsonObject = (JSONObject) iterator.next();
-            Product product = new Product((Long) jsonObject.get("id"), jsonObject.get("name").toString(), (Long) jsonObject.get("price"), jsonObject.get("date").toString());
-            if (product.name.toLowerCase().contains(filters.get(NAME_CONTAINS).toLowerCase())
-                    && product.price >= Integer.parseInt(filters.get(PRICE_GREATER_THAN))
-                    && product.price <= Integer.parseInt(filters.get(PRICE_LESS_THAN))
-                    && LocalDate.parse(product.date, formatter).isAfter(LocalDate.parse(filters.get(DATE_AFTER), formatter))
-                    && LocalDate.parse(product.date, formatter).isBefore(LocalDate.parse(filters.get(DATE_BEFORE), formatter))) {
-                list.add(product);
+        @Override
+        public boolean equals(Object obj) {
+            Product product = (Product) obj;
+            return this.id == product.id;
+        }
+
+        public static void main(String[] args) throws ParseException {
+            isBetweenInclusive(LocalDate.now(), LocalDate.parse("2022-06-10"), LocalDate.parse("2022-06-10"));
+            Scanner scanner = new Scanner(System.in);
+            String products = scanner.nextLine();
+            HashMap<String, String> filters = new HashMap<>();
+            for (int i = 0; i < 5; i++) {
+                String[] s = scanner.nextLine().split(" ");
+                filters.put(s[0], s[1]);
             }
-        }
 
-        Collections.sort(list);
+            JSONParser jsonParser = new JSONParser();
+            JSONArray jsonArray = (JSONArray) jsonParser.parse(products);
+            Iterator iterator = jsonArray.iterator();
+            ArrayList<Product> list = new ArrayList<>();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+            while (iterator.hasNext()) {
+                JSONObject jsonObject = (JSONObject) iterator.next();
+                Product product = new Product((Long) jsonObject.get("id"), jsonObject.get("name").toString(), (Long) jsonObject.get("price"), jsonObject.get("date").toString());
+                if (list.contains(product))
+                    continue;
+                if (product.name.toLowerCase().contains(filters.get(NAME_CONTAINS).toLowerCase())
+                        && product.price >= Integer.parseInt(filters.get(PRICE_GREATER_THAN))
+                        && product.price <= Integer.parseInt(filters.get(PRICE_LESS_THAN))
+                        && isBetweenInclusive((LocalDate.parse(filters.get(DATE_AFTER), formatter)), (LocalDate.parse(filters.get(DATE_BEFORE), formatter)), LocalDate.parse(product.date, formatter))) {
+                    list.add(product);
+                }
+            }
 
-        System.out.print("[");
-        for (int i = 0; i < list.size(); i++) {
-            if (i < list.size() - 1)
-                System.out.print(list.get(i).toString() + ",");
-            else
-                System.out.print(list.get(i).toString() + "]");
+            Collections.sort(list);
+
+            System.out.print("[");
+            for (int i = 0; i < list.size(); i++) {
+                if (i < list.size() - 1)
+                    System.out.print(list.get(i).toString() + ",");
+                else
+                    System.out.print(list.get(i).toString() + "]");
+            }
         }
     }
 }

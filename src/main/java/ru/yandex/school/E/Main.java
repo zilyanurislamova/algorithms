@@ -7,22 +7,21 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) throws FileNotFoundException {
         Scanner scanner = new Scanner(new File("input.txt"));
-        char[] line = scanner.nextLine().toCharArray();
-        for (int i = line.length - 1; i >= 0; i--) {
-            if (line[i] == ')')
+        String s = scanner.nextLine();
+        for (int i = s.length() - 1; i >= 0; i--) {
+            if (s.charAt(i) == ')')
                 for (int j = i - 1; j >= 0; j--) {
-                    if (line[j] == '(') {
-                        line[i] = 'R';
-                        line[j] = 'L';
+                    if (s.charAt(j) == '(') {
+                        s = s.substring(0, j) + 'L' + s.substring(j + 1, i) + 'R' + s.substring(i + 1);
                         break;
                     }
                 }
         }
-        String s = String.valueOf(line);
+
         if ((s.contains("(") && s.contains(")"))
                 || (!s.contains("(") && !s.contains(")"))
-                || s.split("\\(").length > 2
-                || s.split("\\)").length > 2)
+                || s.lastIndexOf("(") != s.indexOf("(")
+                || s.lastIndexOf(")") != s.indexOf(")"))
             System.out.println(-1);
         else if (s.contains("("))
             System.out.println(s.indexOf("(") + 1);
