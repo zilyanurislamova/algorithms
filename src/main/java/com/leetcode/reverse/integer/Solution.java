@@ -1,4 +1,4 @@
-package com.leetcode.integer;
+package com.leetcode.reverse.integer;
 
 public class Solution {
     public static void main(String[] args) {
