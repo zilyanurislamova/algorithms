@@ -6,8 +6,6 @@ public class Solution {
     }
 
     public static int reverse(int x) {
-        if (x == 0)
-            return 0;
         StringBuilder result = x >= 0 ? new StringBuilder("") : new StringBuilder("-");
         while (Math.abs(x) % 10 > 0 || Math.abs(x) / 10 > 0) {
             result.append(Math.abs(x) % 10);
