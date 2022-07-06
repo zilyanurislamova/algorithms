@@ -9,32 +9,18 @@ public class Solution {
         int n = height.length;
         int left = 0;
         int right = n - 1;
-        int h = Math.min(height[left], height[right]);
-        int w = right - left;
-        int result = h * w;
-        while (w >= 1) {
-            int leftH = height[left];
-            int rightH = height[right];
-            if (height[left] < height[right] && height[left + 1] > height[left]) {
-                leftH = height[left + 1];
+        int h = Math.min(height[left], height[right]); // min, because the height is limited by shortest vertical line
+        int w = right - left; // longest width between first and last element
+        int result = h * w; // volume between longest width
+        while (left < right) { // two pointers
+            if (height[left] <= height[right]) // move from the left if the left height is shorter or equals to right
                 left++;
-            }
-            else if (height[right] < height[left] && height[right - 1] > height[right]) {
-                rightH = height[right - 1];
-                right--;
-            }
-            else if (height[left] < height[right]){
-                leftH = height[left + 1];
-                left++;
-            }
-            else {
-                rightH = height[right - 1];
-                right--;
-            }
-            h = Math.min(leftH, rightH);
+            else
+                right--; // otherwise
+            h = Math.min(height[left], height[right]); // calculate current height (min)
             w = right - left;
             int current = h * w;
-            if (current > result)
+            if (current > result) // update result
                 result = current;
         }
         return result;
