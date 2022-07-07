@@ -1,4 +1,4 @@
-package ru.yandex.intern.D;
+package ru.yandex.intern.D.graph;
 
 import java.util.PriorityQueue;
 import java.util.Queue;

@@ -1,4 +1,4 @@
-package ru.yandex.intern.A;
+package ru.yandex.intern.A.andrew.and.acid;
 
 import java.io.IOException;
 import java.util.Scanner;

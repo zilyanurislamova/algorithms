@@ -1,4 +1,4 @@
-package ru.yandex.intern.C;
+package ru.yandex.intern.C.k.min.distances;
 
 import java.util.Arrays;
 import java.util.HashMap;

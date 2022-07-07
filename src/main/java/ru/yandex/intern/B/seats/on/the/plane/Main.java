@@ -1,4 +1,4 @@
-package ru.yandex.intern.B;
+package ru.yandex.intern.B.seats.on.the.plane;
 
 import java.util.*;
 

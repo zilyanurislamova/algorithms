@@ -1,4 +1,4 @@
-package ru.yandex.intern.F;
+package ru.yandex.intern.F.satellite.pictures;
 
 import java.util.ArrayList;
 import java.util.Scanner;
